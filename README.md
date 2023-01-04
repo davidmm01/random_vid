@@ -1,6 +1,8 @@
 # Random Vid
 
-Simple script that generates and plays a randomly ordered playlist in VLC from a provided path. You must have VLC installed, and you must be able to call `vlc` from the command line to launch it.
+Simple script that generates and plays a randomly ordered playlist in a media player from a provided path. Default is VLC.
+
+The desired media player must be installed, and must be able to play/queue up videos by a command line invocation following the pattern `<program name> <vid1> <vid2>`.
 
 ## Python Dependencies
 
@@ -11,13 +13,22 @@ None! This script only uses python built-ins.
 Run the program:
 `python3 random_vid.py <path>`
 
-Limit the size of the paylist to 10 videos:
+Limit the size of the paylist to 10 videos (default is no limit):
 `python3 random_vid.py <path> --limit 10`
 
 By default, the program will recursively look into all subdirectories for files. To only look at the provided path:
 `python3 random_vid.py <path> --no-recursive`
 
-See the help menu for all options:
+Provide a regex to only capture matching videos (default shown):
+`python3 random_vid.py <path> --regex ^.*(.mp4)|(.mkv)$`
+
+Provide the command to launch the desired media player (default shown):
+`python3 random_vid.p <path> --launch-command vlc`
+
+Perform a dry run that will not launch any programs, instead printing the the generated playlist:
+`python3 random_vid.p <path> --dry-run`
+
+Note that all options work with each other. See the help menu for more:
 `python3 random_vid.py --help`
 
 ## Why not use the python-vlc library?

@@ -5,6 +5,9 @@ import re
 import subprocess
 
 
+DEFAULT_REGEX = "^.*(.mp4)|(.mkv)$"
+
+
 def check_positive(value):
     """Helper method for argparse type that allows positive integers only."""
     ivalue = int(value)
@@ -33,14 +36,28 @@ def parse_args():
     )
     parser.add_argument(
         "--regex",
-        default="^.*(.mp4)|(.mkv)$",
-        help="only consider files that match to the supplied regex pattern",
+        default=DEFAULT_REGEX,
+        help=(
+            "only consider files that match to the supplied regex pattern, "
+            f"which by default is only mp4 and mkv files (default: {DEFAULT_REGEX})"
+        ),
     )
     parser.add_argument(
         "--dry-run",
         default=False,
         action="store_true",
-        help="Dont launch VLC, instead only print the playlist. Useful for testing regexs",
+        help="Dont launch the media player, instead only print the playlist. Useful for testing regexs",
+    )
+    parser.add_argument(
+        "--launch-command",
+        default="vlc",
+        help=(
+            "Set the command that should be used to launch the media player. "
+            "Note that not all programs will work here, they must be programs "
+            "that can launch a playlist of videos by invoking "
+            "`launch-command <video1> <video2>` etc.\n"
+            "Some compatible programs include vlc and firefox. (default: vlc)"
+        ),
     )
     return parser.parse_args()
 
@@ -67,6 +84,7 @@ def main():
     path = args.path
     recursive = args.recursive
     limit = args.limit
+    launch = args.launch_command
 
     try:
         regex = re.compile(args.regex)
@@ -87,13 +105,13 @@ def main():
         file_paths = file_paths[0:limit]
 
     if args.dry_run:
-        print("Random Video Playlist")
+        print(f"Random Video Playlist to be played with program '{launch}'")
         padded_len = len(str(len(file_paths)))
         for num, video in enumerate(file_paths):
             print(f"  {str(num+1).zfill(padded_len)}) {video}")
         return
 
-    cmd = ["vlc"] + file_paths
+    cmd = [launch] + file_paths
     subprocess.run(cmd)
 
 
