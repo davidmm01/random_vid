@@ -39,7 +39,7 @@ def parse_args():
     parser.add_argument(
         "--dry-run",
         default=False,
-        action='store_true',
+        action="store_true",
         help="Dont launch VLC, instead only print the playlist. Useful for testing regexs",
     )
     return parser.parse_args()
