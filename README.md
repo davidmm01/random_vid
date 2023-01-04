@@ -2,6 +2,10 @@
 
 Simple script that generates and plays a randomly ordered playlist in VLC from a provided path. You must have VLC installed, and you must be able to call `vlc` from the command line to launch it.
 
+## Python Dependencies
+
+None! This script only uses python built-ins.
+
 ## Usage/Examples
 
 Run the program:
